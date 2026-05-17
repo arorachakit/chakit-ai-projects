@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Settings, Bot, PhoneCall, Activity, BarChart2 } from 'lucide-react'
 import clsx from 'clsx'
+import ThemeToggle from './ThemeToggle'
 
 const Item = ({
   href,
@@ -82,10 +83,16 @@ export default function Sidebar() {
         <Item href="/settings" label="Settings" icon={Settings} disabled />
       </nav>
       <div
-        className="mt-auto pt-4 px-2 font-mono text-[10.5px] uppercase tracking-[0.18em]"
-        style={{ color: 'var(--cup-ink-3)', borderTop: '1px solid var(--cup-rule)' }}
+        className="mt-auto pt-3"
+        style={{ borderTop: '1px solid var(--cup-rule)' }}
       >
-        v · 1.0
+        <ThemeToggle variant="row" />
+        <div
+          className="px-3 pt-2 font-mono text-[10.5px] uppercase tracking-[0.18em]"
+          style={{ color: 'var(--cup-ink-3)' }}
+        >
+          v · 1.0
+        </div>
       </div>
     </aside>
   )

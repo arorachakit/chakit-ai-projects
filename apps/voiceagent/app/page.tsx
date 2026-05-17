@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
+import ThemeToggle from "../components/ThemeToggle";
 
 const VAPI_PUBLIC_KEY =
   process.env.NEXT_PUBLIC_VAPI_PUBLIC_KEY || "YOUR_VAPI_PUBLIC_KEY";
@@ -161,11 +162,14 @@ export default function Page() {
               </span>
             </span>
           </div>
-          <div
-            className="font-mono text-[11px] uppercase tracking-[0.18em]"
-            style={{ color: "var(--cup-ink-3)" }}
-          >
-            {ready ? "ready" : "loading"}
+          <div className="flex items-center gap-3">
+            <div
+              className="hidden sm:block font-mono text-[11px] uppercase tracking-[0.18em]"
+              style={{ color: "var(--cup-ink-3)" }}
+            >
+              {ready ? "ready" : "loading"}
+            </div>
+            <ThemeToggle />
           </div>
         </div>
       </header>

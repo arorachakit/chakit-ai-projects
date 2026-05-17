@@ -1,5 +1,6 @@
 "use client";
 import { useRef, useState, useEffect } from "react";
+import ThemeToggle from "@/components/ThemeToggle";
 
 type Citation = { sourceId: string; snippet: string };
 type Msg = { role: "user" | "assistant"; content: string; citations?: Citation[] };
@@ -140,11 +141,14 @@ export default function Page() {
               </span>
             </span>
           </div>
-          <div
-            className="font-mono text-[11px] uppercase tracking-[0.18em]"
-            style={{ color: "var(--cup-ink-3)" }}
-          >
-            grounded · cited
+          <div className="flex items-center gap-3">
+            <div
+              className="hidden sm:block font-mono text-[11px] uppercase tracking-[0.18em]"
+              style={{ color: "var(--cup-ink-3)" }}
+            >
+              grounded · cited
+            </div>
+            <ThemeToggle />
           </div>
           <input
             ref={fileRef}

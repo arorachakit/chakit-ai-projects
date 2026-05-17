@@ -35,6 +35,9 @@ importers:
 
   apps/custom-voice-agents:
     dependencies:
+      '@chakit/config':
+        specifier: workspace:*
+        version: link:../../packages/config
       '@tanstack/react-query':
         specifier: ^5.51.2
         version: 5.85.5(react@18.2.0)
@@ -111,6 +114,9 @@ importers:
 
   apps/ragapp:
     dependencies:
+      '@chakit/config':
+        specifier: workspace:*
+        version: link:../../packages/config
       '@types/react':
         specifier: ^19.1.12
         version: 19.1.12
