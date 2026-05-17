@@ -1,0 +1,5 @@
+{
+  "crons": [
+    { "path": "/apps/custom-voice-agents/api/agents/cleanup", "schedule": "*/5 * * * *" }
+  ]
+}

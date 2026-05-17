@@ -1,0 +1,21 @@
+{
+  "name": "chakit-ai-projects",
+  "private": true,
+  "packageManager": "pnpm@9.12.3",
+  "devDependencies": {
+    "@types/node": "^24.3.0",
+    "autoprefixer": "^10.4.21",
+    "eslint": "^9.34.0",
+    "eslint-config-next": "^15.5.2",
+    "postcss": "^8.5.6",
+    "prettier": "^3.3.3",
+    "turbo": "^2.0.6",
+    "typescript": "^5.9.2"
+  },
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "format": "prettier --write ."
+  }
+}

@@ -1,0 +1,110 @@
+@import "tailwindcss";
+
+/* ─────────────────────── Cupertino tokens (chakit.ai) ─────────────────────── */
+@theme {
+  --color-ink-950: #0b0807;
+  --color-ink-900: #120e0b;
+  --color-ink-850: #191310;
+  --color-ink-800: #221a15;
+  --color-ink-700: #2d231d;
+  --color-ink-600: #3a2e25;
+
+  --color-cream-50:  #fbf4e9;
+  --color-cream-100: #f5ebe0;
+  --color-cream-200: #ede1d2;
+  --color-cream-300: #dccfba;
+  --color-cream-400: #bba994;
+  --color-cream-500: #8a7864;
+
+  --color-chrome-50:  #fafaf8;
+  --color-chrome-100: #ebe9e4;
+  --color-chrome-200: #d2cfc7;
+  --color-chrome-300: #aba79f;
+  --color-chrome-400: #7a766d;
+  --color-chrome-500: #4f4b44;
+
+  --color-flame: #ff5e1f;
+  --color-flame-400: #ff7b46;
+  --color-flame-500: #ff5e1f;
+  --color-flame-600: #e84b10;
+  --color-flame-700: #b9380a;
+
+  --font-sans: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-display), ui-serif, Georgia, serif;
+  --font-serif: var(--font-serif-cup), ui-serif, Georgia, serif;
+  --font-mono: var(--font-mono), ui-monospace, SFMono-Regular, monospace;
+}
+
+:root {
+  color-scheme: light dark;
+
+  --cup-bg:        #FBFBFD;
+  --cup-bg-2:      #F5F5F7;
+  --cup-bg-3:      #EFEFF1;
+  --cup-surface:   #FFFFFF;
+  --cup-surface-2: #F5F5F7;
+  --cup-ink:       #1D1D1F;
+  --cup-ink-2:     #6E6E73;
+  --cup-ink-3:     #86868B;
+  --cup-rule:      rgba(0,0,0,0.08);
+  --cup-rule-2:    rgba(0,0,0,0.16);
+  --cup-shadow-sm: 0 1px 2px rgba(0,0,0,0.04), 0 0 1px rgba(0,0,0,0.04);
+  --cup-shadow-md: 0 6px 20px -8px rgba(0,0,0,0.10), 0 2px 6px rgba(0,0,0,0.04);
+  --cup-shadow-lg: 0 30px 80px -20px rgba(0,0,0,0.18), 0 10px 30px -10px rgba(0,0,0,0.08);
+  --cup-nav-bg:    rgba(251,251,253,0.78);
+  --cup-link:      #0066CC;
+  --cup-accent:    oklch(0.68 0.21 45);
+  --cup-accent-d:  oklch(0.58 0.21 40);
+  --cup-accent-w:  oklch(0.78 0.18 50);
+}
+
+html[data-theme="dark"] {
+  --cup-bg:        #000;
+  --cup-bg-2:      #0A0A0C;
+  --cup-bg-3:      #16161A;
+  --cup-surface:   #1C1C1F;
+  --cup-surface-2: #16161A;
+  --cup-ink:       #F5F5F7;
+  --cup-ink-2:     #A1A1A6;
+  --cup-ink-3:     #6E6E73;
+  --cup-rule:      rgba(255,255,255,0.10);
+  --cup-rule-2:    rgba(255,255,255,0.20);
+  --cup-shadow-sm: 0 1px 2px rgba(0,0,0,0.4);
+  --cup-shadow-md: 0 6px 20px -8px rgba(0,0,0,0.6), 0 2px 6px rgba(0,0,0,0.3);
+  --cup-shadow-lg: 0 30px 80px -20px rgba(0,0,0,0.8);
+  --cup-nav-bg:    rgba(10,10,12,0.78);
+  --cup-link:      #2997FF;
+}
+
+* { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; text-rendering: optimizeLegibility; }
+html, body { margin: 0; padding: 0; height: 100%; }
+body {
+  background: var(--cup-bg);
+  color: var(--cup-ink);
+  font-family: var(--font-sans);
+  font-size: 17px;
+  line-height: 1.47;
+  letter-spacing: -0.022em;
+  font-weight: 400;
+  transition: background .4s ease, color .4s ease;
+}
+
+::selection { background: var(--cup-accent); color: #fff; }
+
+@keyframes pulse-soft { 0%,100% { opacity: 1; } 50% { opacity: .55; } }
+.pulse-soft { animation: pulse-soft 1.8s ease-in-out infinite; }
+
+@keyframes ping-soft {
+  0% { transform: scale(1); opacity: 0.6; }
+  100% { transform: scale(2.4); opacity: 0; }
+}
+.ping-soft {
+  position: absolute; inset: 0;
+  border-radius: 9999px;
+  animation: ping-soft 2.4s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--cup-rule-2); border-radius: 8px; }
+::-webkit-scrollbar-thumb:hover { background: var(--cup-ink-3); }

@@ -1,0 +1,9 @@
+node_modules
+.next
+dist
+.env*
+.vercel
+.turbo
+.DS_Store
+*.bak
+*.bak.*
