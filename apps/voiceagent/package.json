@@ -10,6 +10,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@chakit/config": "workspace:*",
     "@vapi-ai/web": "^2.3.9",
     "next": "^16.2.6",
     "react": "^19.1.1",

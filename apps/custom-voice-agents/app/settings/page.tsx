@@ -1,18 +1,13 @@
 export default function Settings() {
   return (
-    <div className="opacity-60 select-none pointer-events-none space-y-6">
+    <div className="opacity-60 select-none pointer-events-none space-y-10">
       <div>
-        <p
-          className="text-[13px] font-medium tracking-[-0.01em] m-0 mb-1.5"
-          style={{ color: "var(--cup-accent-d)" }}
-        >
+        <span className="mono nr-kick">
+          <i aria-hidden="true" />
           Configuration
-        </p>
-        <h1
-          className="font-bold leading-[1.05] tracking-[-0.04em] m-0"
-          style={{ color: "var(--cup-ink)", fontSize: "clamp(28px, 3.6vw, 40px)" }}
-        >
-          Settings
+        </span>
+        <h1 className="nr-title" style={{ fontSize: "clamp(40px, 5vw, 72px)" }}>
+          Agent <b>settings</b>
         </h1>
       </div>
       <div className="cup-card p-8">

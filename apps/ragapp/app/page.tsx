@@ -1,6 +1,6 @@
 "use client";
 import { useRef, useState, useEffect } from "react";
-import ThemeToggle from "@/components/ThemeToggle";
+import VinciNav from "@/components/VinciNav";
 
 type Citation = { sourceId: string; snippet: string };
 type Msg = { role: "user" | "assistant"; content: string; citations?: Citation[] };
@@ -26,11 +26,12 @@ export default function Page() {
   const [uploading, setUploading] = useState(false);
 
   const fileRef = useRef<HTMLInputElement>(null);
-  const bottomRef = useRef<HTMLDivElement>(null);
+  const listRef = useRef<HTMLDivElement>(null);
 
+  // scroll the chat panel, not the page
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages, uploading]);
+    listRef.current?.scrollTo({ top: listRef.current.scrollHeight, behavior: "smooth" });
+  }, [messages, uploading, busy]);
 
   async function safeJson(res: Response) {
     const ct = res.headers.get("content-type") || "";
@@ -112,124 +113,46 @@ export default function Page() {
 
   return (
     <div className="flex min-h-dvh flex-col">
-      {/* Header (Cupertino glass nav) */}
-      <header
-        className="sticky top-0 z-10"
-        style={{
-          background: "var(--cup-nav-bg)",
-          backdropFilter: "saturate(180%) blur(20px)",
-          WebkitBackdropFilter: "saturate(180%) blur(20px)",
-          borderBottom: "1px solid var(--cup-rule)",
-        }}
-      >
-        <div className="cup-container flex h-12 items-center justify-between">
-          <div className="flex items-center gap-2.5">
-            <span
-              className="inline-block h-2 w-2 rounded-full"
-              style={{ background: "oklch(0.65 0.18 145)" }}
-            />
-            <span
-              className="text-[15px] font-semibold tracking-[-0.022em]"
-              style={{ color: "var(--cup-ink)" }}
-            >
-              chakit<span style={{ color: "var(--cup-accent-d)" }}>.ai</span>
-              <span
-                className="ml-2 text-[12px] font-normal"
-                style={{ color: "var(--cup-ink-2)" }}
-              >
-                / RAG Chat
-              </span>
-            </span>
-          </div>
-          <div className="flex items-center gap-3">
-            <div
-              className="hidden sm:block font-mono text-[11px] uppercase tracking-[0.18em]"
-              style={{ color: "var(--cup-ink-3)" }}
-            >
-              grounded · cited
-            </div>
-            <ThemeToggle />
-          </div>
-          <input
-            ref={fileRef}
-            type="file"
-            multiple
-            accept=".pdf,image/*,.txt,.md,.mdx"
-            className="hidden"
-            onChange={handleUploadFromPicker}
-          />
-        </div>
-      </header>
+      <VinciNav />
+      <input
+        ref={fileRef}
+        type="file"
+        multiple
+        accept=".pdf,image/*,.txt,.md,.mdx"
+        className="hidden"
+        onChange={handleUploadFromPicker}
+      />
 
-      {/* Hero strip */}
-      <section className="cup-container pt-10 pb-6">
-        <p
-          className="text-[13px] font-medium tracking-[-0.01em] mb-1.5"
-          style={{ color: "var(--cup-accent-d)" }}
-        >
-          Now serving
-        </p>
-        <h1
-          className="font-bold leading-[1.05] tracking-[-0.04em] m-0 mb-2 text-balance"
-          style={{ color: "var(--cup-ink)", fontSize: "clamp(32px, 5vw, 52px)" }}
-        >
-          Ask anything.{" "}
-          <em
-            className="not-italic"
-            style={{
-              fontFamily: "var(--font-serif-cup)",
-              fontStyle: "italic",
-              fontWeight: 400,
-              letterSpacing: "-0.03em",
-              color: "var(--cup-accent-d)",
-            }}
-          >
-            grounded in your docs.
-          </em>
+      {/* Intro */}
+      <section className="cup-container pt-[clamp(20px,4vw,56px)] pb-[clamp(24px,3vw,40px)]">
+        <span className="mono nr-kick">
+          <i aria-hidden="true" />
+          RAG chat · live demo
+        </span>
+        <h1 className="nr-title" style={{ fontSize: "clamp(40px, 5.6vw, 80px)" }}>
+          Ask anything. <b>Grounded in your docs.</b>
         </h1>
-        <p
-          className="text-[16px] tracking-[-0.012em] max-w-[640px] m-0"
-          style={{ color: "var(--cup-ink-2)" }}
-        >
-          Drop a PDF or image; chakit.ai answers with citations. Without uploads,
-          you still get a normal chat.
+        <p className="nr-lede">
+          Drop in a PDF or an image and the answers come back with citations.
+          Without uploads, it is a normal chat.
         </p>
       </section>
 
       {/* Main */}
-      <main className="cup-container flex-1 grid grid-cols-12 gap-5 pb-6 overflow-hidden">
-        {/* Sidebar */}
-        <aside className="col-span-12 md:col-span-4 lg:col-span-3 overflow-hidden">
-          <div className="cup-card h-full flex flex-col">
-            <div
-              className="px-5 py-4 flex items-center justify-between"
-              style={{ borderBottom: "1px solid var(--cup-rule)" }}
-            >
-              <span
-                className="font-mono text-[11px] uppercase tracking-[0.16em]"
-                style={{ color: "var(--cup-ink-3)" }}
-              >
-                Recent chats
-              </span>
-              <span
-                className="font-mono text-[11px] tabular-nums"
-                style={{ color: "var(--cup-ink-3)" }}
-              >
-                {SAMPLE_CHATS.length}
-              </span>
+      <main className="cup-container flex-1 grid grid-cols-12 gap-5 pb-6">
+        {/* Sample chats (decorative), hidden on phones to give the chat the room */}
+        <aside className="hidden md:block md:col-span-4 lg:col-span-3">
+          <div className="cup-card h-full">
+            <div className="nr-bar">
+              <span className="mono">Recent chats</span>
+              <span className="mono tabular-nums">{SAMPLE_CHATS.length}</span>
             </div>
-            <ul className="p-2 overflow-y-auto">
+            <ul className="p-2 m-0 list-none">
               {SAMPLE_CHATS.map((t, i) => (
                 <li
                   key={i}
-                  className="group relative px-3 py-2.5 text-[14px] rounded-[10px] cursor-default truncate tracking-[-0.012em] transition-colors"
-                  style={{ color: "var(--cup-ink)" }}
-                  onMouseEnter={(e) => {
-                    (e.currentTarget as HTMLElement).style.background = "var(--cup-bg-3)";
-                  }}
-                  onMouseLeave={(e) => {
-                    (e.currentTarget as HTMLElement).style.background = "transparent";
-                  }}
+                  className="px-3 py-2.5 text-[14px] rounded-[12px] cursor-default truncate transition-colors hover:bg-white/[.05]"
+                  style={{ color: "var(--mute)" }}
                 >
                   {t}
                 </li>
@@ -238,90 +161,49 @@ export default function Page() {
           </div>
         </aside>
 
-        {/* Chat area — Mac window chrome */}
-        <section className="col-span-12 md:col-span-8 lg:col-span-9 overflow-hidden">
-          <div className="cup-card h-full flex flex-col">
-            {/* Title bar with traffic lights */}
-            <div
-              className="h-9 grid grid-cols-[auto_1fr_auto] items-center px-3.5 gap-3"
-              style={{
-                background: "var(--cup-bg-2)",
-                borderBottom: "1px solid var(--cup-rule)",
-              }}
-            >
-              <div className="flex items-center gap-1.5">
-                <span className="h-3 w-3 rounded-full" style={{ background: "#FF5F57" }} />
-                <span className="h-3 w-3 rounded-full" style={{ background: "#FEBC2E" }} />
-                <span className="h-3 w-3 rounded-full" style={{ background: "#28C840" }} />
-              </div>
-              <div
-                className="text-center font-mono text-[11px] tracking-[0.06em]"
-                style={{ color: "var(--cup-ink-3)" }}
-              >
-                rag-chat · session
-              </div>
-              <div
-                className="font-mono text-[11px]"
-                style={{ color: "var(--cup-ink-3)" }}
-              >
-                ⌘K
-              </div>
+        {/* Chat */}
+        <section className="col-span-12 md:col-span-8 lg:col-span-9">
+          <div className="nr-panel flex flex-col">
+            <div className="nr-bar">
+              <span className="who">
+                <i className={`nr-led ${busy || uploading ? "live" : "done"}`} aria-hidden="true" />
+                {uploading ? "Indexing your files" : busy ? "Thinking" : "Session"}
+              </span>
+              <span className="meta mono">
+                <span>Grounded · cited</span>
+              </span>
             </div>
 
-            {/* Messages */}
-            <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-5">
+            <div
+              ref={listRef}
+              className="h-[clamp(340px,52vh,580px)] overflow-y-auto p-4 sm:p-6 flex flex-col gap-3.5"
+              aria-live="polite"
+            >
               {messages.map((msg, i) => (
-                <div
-                  key={i}
-                  className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
-                >
-                  <div
-                    className="max-w-[85%] rounded-[16px] px-4 py-3 whitespace-pre-wrap leading-relaxed text-[15px] tracking-[-0.012em]"
-                    style={
-                      msg.role === "user"
-                        ? {
-                            background: "var(--cup-ink)",
-                            color: "var(--cup-bg)",
-                          }
-                        : {
-                            background: "var(--cup-surface-2)",
-                            color: "var(--cup-ink)",
-                            border: "1px solid var(--cup-rule)",
-                          }
-                    }
-                  >
-                    {msg.content}
-                    {!!msg.citations?.length && (
-                      <div className="mt-2.5 flex flex-wrap gap-2">
-                        {msg.citations.map((c, j) => (
-                          <span key={j} className="cup-badge" title={c.snippet}>
-                            {c.sourceId}
-                          </span>
-                        ))}
-                      </div>
-                    )}
-                  </div>
+                <div key={i} className={`nr-msg ${msg.role === "user" ? "hu" : "ai"}`}>
+                  <span className="w">{msg.role === "user" ? "You" : "Assistant"}</span>
+                  {msg.content}
+                  {!!msg.citations?.length && (
+                    <div className="mt-2.5 flex flex-wrap gap-2">
+                      {msg.citations.map((c, j) => (
+                        <span key={j} className="cup-badge" title={c.snippet}>
+                          {c.sourceId}
+                        </span>
+                      ))}
+                    </div>
+                  )}
                 </div>
               ))}
-              {uploading && (
-                <div className="flex justify-start">
-                  <div
-                    className="inline-flex items-center gap-2 rounded-[16px] px-4 py-3 text-[14px]"
-                    style={{
-                      background: "var(--cup-surface-2)",
-                      color: "var(--cup-ink-2)",
-                      border: "1px solid var(--cup-rule)",
-                    }}
-                  >
-                    <span
-                      className="h-3.5 w-3.5 rounded-full border-2 border-t-transparent animate-spin"
-                      style={{ borderColor: "var(--cup-accent)", borderTopColor: "transparent" }}
-                    />
-                    Uploading…
-                  </div>
+              {(busy || uploading) && (
+                <div className="nr-msg ai">
+                  <span className="w">{uploading ? "Uploading" : "Assistant"}</span>
+                  <span className="nr-dots" aria-label={uploading ? "Uploading" : "Thinking"}>
+                    <span />
+                    <span />
+                    <span />
+                  </span>
                 </div>
               )}
-              <div ref={bottomRef} />
             </div>
           </div>
         </section>
@@ -329,45 +211,38 @@ export default function Page() {
 
       {/* Composer */}
       <footer
-        className="sticky bottom-0 z-10"
-        style={{
-          background: "var(--cup-nav-bg)",
-          backdropFilter: "saturate(180%) blur(20px)",
-          WebkitBackdropFilter: "saturate(180%) blur(20px)",
-          borderTop: "1px solid var(--cup-rule)",
-        }}
+        className="sticky bottom-0 z-10 pt-6"
+        style={{ background: "linear-gradient(rgba(6,7,10,0), var(--bg) 40%)" }}
       >
-        <div className="cup-container py-3">
+        <div className="cup-container pb-[max(16px,env(safe-area-inset-bottom))]">
           <div className="mx-auto flex max-w-[920px] items-center gap-2">
             <button
-              className="cup-btn"
+              className="cup-btn shrink-0"
               disabled={busy || uploading}
               onClick={() => fileRef.current?.click()}
-              title="Upload files"
+              title="Upload PDFs, images or text files"
             >
               {uploading ? "Uploading…" : "Upload"}
             </button>
             <input
               className="cup-input"
-              placeholder="Message… (works even without uploads)"
+              placeholder="Ask anything…"
+              aria-label="Message"
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => (e.key === "Enter" && !e.shiftKey ? send() : null)}
               disabled={busy || uploading}
             />
             <button
-              className="cup-btn cup-btn-primary"
+              className="cup-btn cup-btn-accent shrink-0"
               onClick={send}
               disabled={busy || uploading || !input.trim()}
             >
               Send
             </button>
           </div>
-          <p
-            className="mx-auto mt-2 max-w-[920px] text-[12px] tracking-[-0.01em]"
-            style={{ color: "var(--cup-ink-3)" }}
-          >
-            Upload PDFs/images to enable grounded answers with citations. Without uploads, this is a normal chat.
+          <p className="mono mx-auto mt-3 max-w-[920px] hidden sm:block" style={{ fontSize: 10.5 }}>
+            Upload PDFs or images for grounded answers with citations
           </p>
         </div>
       </footer>

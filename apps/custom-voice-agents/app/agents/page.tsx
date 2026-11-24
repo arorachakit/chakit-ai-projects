@@ -101,50 +101,30 @@ function Modal({
       data-testid="create-agent-modal"
       className="fixed inset-0 z-[9999] grid place-items-center p-4"
       style={{
-        background: "color-mix(in oklch, var(--cup-bg) 65%, transparent)",
-        backdropFilter: "blur(10px) saturate(180%)",
-        WebkitBackdropFilter: "blur(10px) saturate(180%)",
+        background: "rgba(6,7,10,.72)",
+        backdropFilter: "blur(10px)",
+        WebkitBackdropFilter: "blur(10px)",
       }}
       onClick={onClose}
     >
       <div
-        className="w-full max-w-lg rounded-[18px] overflow-hidden"
-        style={{
-          background: "var(--cup-surface)",
-          border: "1px solid var(--cup-rule)",
-          boxShadow: "var(--cup-shadow-lg)",
-        }}
+        className="nr-panel w-full max-w-lg max-h-[calc(100dvh-32px)]"
+        style={{ background: "#0B0C10", boxShadow: "var(--cup-shadow-lg)", overflowY: "auto" }}
         onClick={(e) => e.stopPropagation()}
         role="dialog"
         aria-modal="true"
+        aria-label="Create agent"
       >
-        {/* Mac title bar */}
-        <div
-          className="h-9 grid grid-cols-[auto_1fr_auto] items-center px-3.5 gap-3"
-          style={{
-            background: "var(--cup-bg-2)",
-            borderBottom: "1px solid var(--cup-rule)",
-          }}
-        >
-          <div className="flex items-center gap-1.5">
-            <span
-              className="h-3 w-3 rounded-full cursor-pointer"
-              style={{ background: "#FF5F57" }}
-              onClick={onClose}
-              title="Close"
-            />
-            <span className="h-3 w-3 rounded-full" style={{ background: "#FEBC2E" }} />
-            <span className="h-3 w-3 rounded-full" style={{ background: "#28C840" }} />
-          </div>
-          <div
-            className="text-center font-mono text-[11px] tracking-[0.06em]"
-            style={{ color: "var(--cup-ink-3)" }}
-          >
-            new-agent
-          </div>
-          <span />
+        <div className="nr-bar">
+          <span className="who">
+            <i className="nr-led done" aria-hidden="true" />
+            New agent
+          </span>
+          <button type="button" onClick={onClose} className="mono hover:text-[var(--fg)] min-h-[32px]">
+            Close ✕
+          </button>
         </div>
-        <div className="p-5">{children}</div>
+        <div className="p-5 sm:p-6">{children}</div>
       </div>
     </div>,
     document.body
@@ -218,36 +198,19 @@ export default function Agents() {
   const agents = Array.isArray(data) ? data : [];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-10">
       <CallOverlayAuto />
       <audio ref={audioRef} hidden />
 
       {/* Section head */}
       <div className="flex items-end justify-between gap-4 flex-wrap">
         <div>
-          <p
-            className="text-[13px] font-medium tracking-[-0.01em] m-0 mb-1.5"
-            style={{ color: "var(--cup-accent-d)" }}
-          >
+          <span className="mono nr-kick">
+            <i aria-hidden="true" />
             Roster
-          </p>
-          <h1
-            className="font-bold leading-[1.05] tracking-[-0.04em] m-0"
-            style={{ color: "var(--cup-ink)", fontSize: "clamp(28px, 3.6vw, 40px)" }}
-          >
-            Voice{" "}
-            <em
-              className="not-italic"
-              style={{
-                fontFamily: "var(--font-serif-cup)",
-                fontStyle: "italic",
-                fontWeight: 400,
-                letterSpacing: "-0.03em",
-                color: "var(--cup-accent-d)",
-              }}
-            >
-              agents
-            </em>
+          </span>
+          <h1 className="nr-title" style={{ fontSize: "clamp(40px, 5vw, 72px)" }}>
+            Voice <b>agents</b>
           </h1>
         </div>
         <div className="flex gap-2 flex-wrap">
@@ -283,29 +246,20 @@ export default function Agents() {
           return (
             <div
               key={a.id}
-              className="cup-card p-5 transition-transform duration-300 hover:-translate-y-0.5"
+              className="cup-card p-6 flex flex-col transition-[transform,border-color] duration-300 hover:-translate-y-0.5 hover:border-white/20"
             >
               <div className="flex items-start justify-between gap-2 mb-2">
-                <div
-                  className="text-[17px] font-semibold tracking-[-0.022em]"
-                  style={{ color: "var(--cup-ink)" }}
-                >
+                <div className="text-[21px] font-normal tracking-[-0.03em]">
                   {display}
                 </div>
-                <span
-                  className="font-mono text-[10px] uppercase tracking-[0.12em] px-2 py-0.5 rounded-full"
-                  style={{
-                    color: "oklch(0.55 0.16 145)",
-                    background: "color-mix(in oklch, oklch(0.65 0.18 145) 12%, transparent)",
-                    border: "1px solid color-mix(in oklch, oklch(0.65 0.18 145) 30%, transparent)",
-                  }}
-                >
+                <span className="mono inline-flex items-center gap-2 pt-1.5" style={{ color: "var(--accent)", fontSize: 10.5 }}>
+                  <i className="nr-led done" aria-hidden="true" />
                   Live
                 </span>
               </div>
               <p
-                className="text-[14px] tracking-[-0.012em] m-0 mb-4 leading-relaxed"
-                style={{ color: "var(--cup-ink-2)" }}
+                className="text-[15px] m-0 mb-6 leading-relaxed flex-1"
+                style={{ color: "var(--mute)" }}
               >
                 {a.goal}
               </p>
@@ -338,11 +292,8 @@ export default function Agents() {
 
       {/* Modal */}
       <Modal open={open} onClose={() => setOpen(false)}>
-        <h2
-          className="text-[20px] font-semibold tracking-[-0.022em] m-0 mb-4"
-          style={{ color: "var(--cup-ink)" }}
-        >
-          Create agent
+        <h2 className="nr-title" style={{ fontSize: 34, margin: "0 0 24px" }}>
+          Create an <b>agent</b>
         </h2>
         <div className="space-y-4">
           <div>
@@ -416,7 +367,7 @@ export default function Agents() {
             </div>
           </div>
         </div>
-        <div className="flex justify-end gap-2 mt-5">
+        <div className="flex justify-end gap-2 mt-6">
           <button onClick={() => setOpen(false)} className="cup-btn">
             Cancel
           </button>
@@ -425,9 +376,10 @@ export default function Agents() {
               (window as any).gtag?.("event", "create_agent");
               mCreate.mutate(form);
             }}
-            className="cup-btn cup-btn-primary"
+            className="cup-btn cup-btn-accent"
+            disabled={mCreate.isPending}
           >
-            Create
+            {mCreate.isPending ? "Creating…" : "Create agent"}
           </button>
         </div>
       </Modal>

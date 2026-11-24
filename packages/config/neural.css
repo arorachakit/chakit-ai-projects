@@ -1,0 +1,107 @@
+/* The Vinci Labs "Neural" look, shared by the three demo apps so they match thevincilabs.com:
+   dark field of dots, light display type, mono labels, one lime accent. Dark only.
+   Import it in each root layout AFTER globals.css. It also re-points the older --cup-* tokens and
+   .cup-* primitives, so existing inline styles follow without being rewritten. */
+:root {
+  color-scheme: dark;
+  --bg: #06070A; --fg: #F1F1EE; --mute: #8E9098; --line: rgba(255,255,255,.085); --surface: rgba(11,12,16,.86);
+  --accent: #B4FF2F; --on-accent: #0A0A0A;
+  --ease: cubic-bezier(.2,.7,.2,1);
+  --font-sans: var(--nr-sans), 'Helvetica Neue', Arial, sans-serif;
+  --font-mono: var(--nr-mono), ui-monospace, Menlo, monospace;
+
+  --cup-bg: var(--bg); --cup-bg-2: rgba(255,255,255,.03); --cup-bg-3: rgba(255,255,255,.06);
+  --cup-surface: var(--surface); --cup-surface-2: rgba(255,255,255,.045);
+  --cup-ink: var(--fg); --cup-ink-2: var(--mute); --cup-ink-3: var(--mute);
+  --cup-rule: var(--line); --cup-rule-2: rgba(255,255,255,.22);
+  --cup-shadow-sm: none; --cup-shadow-md: none; --cup-shadow-lg: 0 40px 120px -40px rgba(0,0,0,.9);
+  --cup-accent: var(--accent); --cup-accent-d: var(--accent); --cup-accent-w: var(--accent);
+}
+html { background: var(--bg); }
+body {
+  margin: 0; min-height: 100dvh; color: var(--fg);
+  font-family: var(--font-sans); font-size: 16px; line-height: 1.5; letter-spacing: -.01em;
+  -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
+  background: radial-gradient(60% 45% at 75% 0%, rgba(180,255,47,.07), transparent 70%), radial-gradient(circle, rgba(255,255,255,.07) 1px, transparent 1.3px) 0 0 / 22px 22px, var(--bg);
+}
+::selection { background: var(--accent); color: var(--on-accent); }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+* { scrollbar-width: thin; scrollbar-color: rgba(255,255,255,.15) transparent; }
+.mono { font-family: var(--font-mono); font-size: 11.5px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--mute); }
+.nr-gut { padding-left: max(clamp(16px, 4vw, 56px), env(safe-area-inset-left, 0px)); padding-right: max(clamp(16px, 4vw, 56px), env(safe-area-inset-right, 0px)); }
+
+/* top nav + footer, same as the website */
+.nr-nav { position: sticky; top: 0; z-index: 50; display: flex; align-items: center; gap: 28px; padding-top: calc(env(safe-area-inset-top, 0px) + 18px); padding-bottom: 16px; background: linear-gradient(var(--bg) 60%, rgba(6,7,10,0)); }
+.nr-nav img { height: 21px; width: auto; display: block; }
+.nr-nav nav { display: flex; align-items: center; gap: 28px; margin-left: auto; }
+.nr-nav nav a:not(.nr-cta) { font-size: 14px; opacity: .72; transition: opacity .3s; padding: 12px 0; }
+.nr-nav nav a:not(.nr-cta):hover { opacity: 1; }
+.nr-cta { display: inline-flex; align-items: center; min-height: 44px; padding: 0 22px; border-radius: 999px; background: var(--fg); color: var(--bg); font-size: 14px; font-weight: 500; white-space: nowrap; transition: transform .4s var(--ease); }
+.nr-cta:hover { transform: translateY(-2px); }
+.nr-foot { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding-top: 28px; padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 40px); border-top: 1px solid var(--line); }
+@media (max-width: 640px) { .nr-nav nav a:not(.nr-cta) { display: none; } }
+
+/* headings: mono kicker with a lime dot, light display type with a bold emphasis word */
+.nr-kick { display: inline-flex; align-items: center; gap: 10px; }
+.nr-kick i { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 12px var(--accent); }
+.nr-title { margin: 14px 0 0; font-weight: 250; line-height: .96; letter-spacing: -.05em; text-wrap: balance; color: var(--fg); }
+.nr-title b { font-weight: 600; letter-spacing: -.055em; }
+.nr-lede { margin: 18px 0 0; max-width: 560px; font-size: clamp(16px, 1.3vw, 18px); line-height: 1.55; color: var(--mute); }
+
+/* panels with a status bar on top (replaces the old mac-window chrome) */
+.nr-panel { position: relative; border-radius: 28px; border: 1px solid var(--line); background: var(--surface); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); overflow: hidden; }
+.nr-bar { display: flex; align-items: center; justify-content: space-between; gap: 12px 16px; flex-wrap: wrap; padding: 16px 22px; border-bottom: 1px solid var(--line); }
+.nr-bar .who { display: flex; align-items: center; gap: 12px; font-size: 15px; font-weight: 500; letter-spacing: -.01em; }
+.nr-bar .meta { display: flex; align-items: center; gap: 14px; }
+.nr-bar .meta b { color: var(--fg); font-weight: 500; font-variant-numeric: tabular-nums; }
+.nr-led { position: relative; flex: none; width: 9px; height: 9px; border-radius: 50%; background: rgba(255,255,255,.25); transition: background .4s; }
+.nr-led.live { background: var(--accent); animation: nrPing 1.6s var(--ease) infinite; }
+.nr-led.done { background: var(--accent); }
+@keyframes nrPing { 0% { box-shadow: 0 0 0 0 rgba(180,255,47,.5); } 70%, 100% { box-shadow: 0 0 0 9px rgba(180,255,47,0); } }
+
+/* conversations: transcript rows (calls), bubbles (chat), typing dots, dot waveform */
+.nr-wave { display: block; width: 100%; height: clamp(90px, 14vh, 130px); }
+.nr-empty { margin: auto; max-width: 340px; text-align: center; color: var(--mute); font-size: 15px; line-height: 1.5; }
+.nr-ln { display: grid; grid-template-columns: 80px minmax(0, 1fr); gap: 14px; line-height: 1.5; font-size: 15.5px; animation: nrIn .5s var(--ease) both; }
+.nr-ln .w { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--mute); padding-top: 4px; }
+.nr-ln.ai .w { color: var(--accent); }
+.nr-ln.hu p { color: #C6C7CC; }
+.nr-ln.partial p { opacity: .55; }
+.nr-ln p { margin: 0; }
+.nr-msg { max-width: min(82%, 620px); padding: 12px 16px; border-radius: 18px; font-size: 15px; line-height: 1.55; white-space: pre-wrap; overflow-wrap: anywhere; animation: nrIn .5s var(--ease) both; }
+.nr-msg .w { display: block; margin-bottom: 4px; font-family: var(--font-mono); font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: var(--mute); }
+.nr-msg.ai { align-self: flex-start; background: rgba(255,255,255,.045); border: 1px solid rgba(255,255,255,.12); border-top-left-radius: 6px; }
+.nr-msg.ai .w { color: var(--accent); }
+.nr-msg.hu { align-self: flex-end; background: rgba(180,255,47,.09); border: 1px solid rgba(180,255,47,.45); border-top-right-radius: 6px; }
+.nr-dots { display: inline-flex; gap: 5px; align-items: center; height: 24px; color: var(--accent); }
+.nr-dots span { width: 6px; height: 6px; border-radius: 50%; background: currentColor; animation: nrBlink 1s infinite; }
+.nr-dots span:nth-child(2) { animation-delay: .15s; } .nr-dots span:nth-child(3) { animation-delay: .3s; }
+@keyframes nrBlink { 50% { opacity: .2; } }
+@keyframes nrIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+@media (max-width: 640px) {
+  .nr-bar { padding: 14px 16px; }
+  .nr-ln { grid-template-columns: minmax(0, 1fr); gap: 2px; font-size: 15px; }
+  .nr-msg { max-width: 90%; }
+}
+
+/* shared primitives (class names kept from the old system so the JSX didn't have to change).
+   Note: this file loads after Tailwind, so these beat utility classes that set the same property on the same element. */
+.cup-container { width: 100%; max-width: 1180px; margin: 0 auto; padding-left: max(clamp(16px, 4vw, 56px), env(safe-area-inset-left, 0px)); padding-right: max(clamp(16px, 4vw, 56px), env(safe-area-inset-right, 0px)); }
+.cup-card { background: var(--surface); border: 1px solid var(--line); border-radius: 24px; -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); overflow: hidden; }
+.cup-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 0 20px; border-radius: 999px; border: 1px solid rgba(255,255,255,.22); background: transparent; color: var(--fg); font: 500 14px/1 var(--font-sans); letter-spacing: -.005em; white-space: nowrap; cursor: pointer; transition: border-color .3s, background .3s, transform .4s var(--ease); }
+.cup-btn:hover:not(:disabled) { border-color: rgba(255,255,255,.5); background: rgba(255,255,255,.04); }
+.cup-btn:disabled { opacity: .45; cursor: default; }
+.cup-btn.nr-lg { min-height: 52px; padding: 0 26px; font-size: 15px; }
+.cup-btn-primary { background: var(--fg); color: var(--bg); border-color: transparent; }
+.cup-btn-primary:hover:not(:disabled) { background: var(--fg); border-color: transparent; transform: translateY(-2px); }
+.cup-btn-accent { background: var(--accent); color: var(--on-accent); border-color: transparent; font-weight: 600; }
+.cup-btn-accent:hover:not(:disabled) { background: var(--accent); border-color: transparent; transform: translateY(-2px); }
+.cup-input { width: 100%; min-height: 44px; padding: 10px 16px; border-radius: 14px; border: 1px solid var(--line); background: rgba(255,255,255,.03); color: var(--fg); font: 400 16px/1.4 var(--font-sans); outline: none; transition: border-color .3s, box-shadow .3s; }
+.cup-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(180,255,47,.16); }
+textarea.cup-input { min-height: 110px; resize: vertical; }
+.cup-input::placeholder { color: var(--mute); }
+.cup-input option { background: #0B0C10; color: var(--fg); }
+.cup-label { display: block; margin-bottom: 8px; font-family: var(--font-mono); font-size: 10.5px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--mute); }
+.cup-badge { display: inline-flex; align-items: center; padding: 3px 10px; border-radius: 999px; border: 1px solid rgba(180,255,47,.35); background: rgba(180,255,47,.06); color: var(--accent); font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .06em; text-transform: uppercase; }
+
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition-duration: .01ms !important; } }

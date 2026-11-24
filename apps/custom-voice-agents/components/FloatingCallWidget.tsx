@@ -41,17 +41,13 @@ export default function FloatingCallWidget({ assistantId }: Props) {
   return (
     <button
       onClick={start}
-      className="fixed bottom-6 right-6 inline-flex items-center gap-2 rounded-full px-5 py-3.5 text-[14px] font-medium tracking-[-0.012em] transition-all hover:scale-[1.04] disabled:opacity-60 disabled:cursor-not-allowed"
-      style={{
-        background: "var(--cup-ink)",
-        color: "var(--cup-bg)",
-        boxShadow: "var(--cup-shadow-lg)",
-      }}
+      className="cup-btn cup-btn-accent nr-lg fixed z-40 bottom-[max(24px,env(safe-area-inset-bottom))] right-[max(16px,env(safe-area-inset-right))] md:right-8"
+      style={{ boxShadow: "0 18px 50px -18px rgba(180,255,47,.55)" }}
       title={busy ? "Call in progress" : "Start voice chat"}
       disabled={busy}
       aria-busy={busy}
     >
-      <Phone size={16} className="-mt-0.5" />
+      <Phone size={16} aria-hidden="true" />
       <span>{busy ? "On call…" : "Voice chat"}</span>
     </button>
   );

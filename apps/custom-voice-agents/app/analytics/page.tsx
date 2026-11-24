@@ -21,35 +21,27 @@ const pie = [
   { name: "Ongoing", value: 2 },
 ];
 
-const PIE_COLORS = [
-  "oklch(0.65 0.18 145)",
-  "oklch(0.58 0.21 40)",
-  "oklch(0.78 0.18 50)",
-];
+// one accent: lime for the good outcome, neutrals for the rest
+const PIE_COLORS = ["#B4FF2F", "#5A5D66", "#F1F1EE"];
 
 export default function Analytics() {
   return (
-    <div className="space-y-6">
+    <div className="space-y-10">
       <div>
-        <p
-          className="text-[13px] font-medium tracking-[-0.01em] m-0 mb-1.5"
-          style={{ color: "var(--cup-accent-d)" }}
-        >
+        <span className="mono nr-kick">
+          <i aria-hidden="true" />
           Overview
-        </p>
-        <h1
-          className="font-bold leading-[1.05] tracking-[-0.04em] m-0"
-          style={{ color: "var(--cup-ink)", fontSize: "clamp(28px, 3.6vw, 40px)" }}
-        >
-          Analytics
+        </span>
+        <h1 className="nr-title" style={{ fontSize: "clamp(40px, 5vw, 72px)" }}>
+          Call <b>analytics</b>
         </h1>
       </div>
 
       <div className="grid gap-5 lg:grid-cols-2">
-        <div className="cup-card p-5">
+        <div className="cup-card p-6">
           <div className="flex items-center justify-between mb-3">
             <span
-              className="font-mono text-[11px] uppercase tracking-[0.16em]"
+              className="mono"
               style={{ color: "var(--cup-ink-3)" }}
             >
               Calls
@@ -79,11 +71,13 @@ export default function Analytics() {
                 />
                 <Tooltip
                   contentStyle={{
-                    background: "var(--cup-surface)",
-                    border: "1px solid var(--cup-rule)",
+                    background: "#0B0C10",
+                    border: "1px solid var(--line)",
                     borderRadius: 12,
                     fontSize: 12,
+                    color: "var(--fg)",
                   }}
+                  itemStyle={{ color: "var(--fg)" }}
                 />
                 <Line
                   type="monotone"
@@ -96,10 +90,10 @@ export default function Analytics() {
             </ResponsiveContainer>
           </div>
         </div>
-        <div className="cup-card p-5">
+        <div className="cup-card p-6">
           <div className="flex items-center justify-between mb-3">
             <span
-              className="font-mono text-[11px] uppercase tracking-[0.16em]"
+              className="mono"
               style={{ color: "var(--cup-ink-3)" }}
             >
               Outcomes
@@ -110,18 +104,20 @@ export default function Analytics() {
               <PieChart>
                 <Tooltip
                   contentStyle={{
-                    background: "var(--cup-surface)",
-                    border: "1px solid var(--cup-rule)",
+                    background: "#0B0C10",
+                    border: "1px solid var(--line)",
                     borderRadius: 12,
                     fontSize: 12,
+                    color: "var(--fg)",
                   }}
+                  itemStyle={{ color: "var(--fg)" }}
                 />
                 <Pie
                   data={pie}
                   dataKey="value"
                   nameKey="name"
                   label
-                  stroke="var(--cup-surface)"
+                  stroke="#0B0C10"
                   strokeWidth={2}
                 >
                   {pie.map((_, i) => (
